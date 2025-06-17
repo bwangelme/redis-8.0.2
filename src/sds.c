@@ -222,6 +222,7 @@ void sdsclear(sds s) {
  * by sdslen(), but only the free buffer space we have. */
 sds _sdsMakeRoomFor(sds s, size_t addlen, int greedy) {
     void *sh, *newsh;
+    // avail 返回 sds 中可用的空间，即 alloc - len
     size_t avail = sdsavail(s);
     size_t len, newlen, reqlen;
     char type, oldtype = s[-1] & SDS_TYPE_MASK;
