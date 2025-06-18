@@ -216,7 +216,16 @@ void sdstoupper(sds s)  // 转大写
 - 不重新分配内存
 - 直接修改字符
 
-SDS 字符串操作的特点：
+9. **字符串缩容**
+
+```c
+sds sdsRemoveFreeSpace(sds s, int would_regrow)
+```
+
+- 删除字符串后面的空白字符
+- 如果新类型比原来类型小，使用原来的空间，调用 malloc 进行 realloc
+
+## SDS 字符串操作的特点
 
 1. **二进制安全**：
    - 可以存储任意二进制数据
