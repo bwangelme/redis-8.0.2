@@ -95,28 +95,8 @@ typedef struct list {
 
 ### 5. 使用示例
 
-```c
-// 创建链表
-list *myList = listCreate();
+详见 ./adlist_demo
 
-// 添加节点
-listAddNodeHead(myList, "hello");
-listAddNodeTail(myList, "world");
-
-// 遍历链表
-listIter *iter = listGetIterator(myList, AL_START_HEAD);
-listNode *node;
-while ((node = listNext(iter)) != NULL) {
-    printf("%s\n", (char*)node->value);
-}
-listReleaseIterator(iter);
-
-// 查找节点
-listNode *found = listSearchKey(myList, "hello");
-
-// 释放链表
-listRelease(myList);
-```
 
 ### 6. 性能特点
 
