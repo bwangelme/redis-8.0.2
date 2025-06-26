@@ -3,6 +3,9 @@
 #include <string.h>
 #include "../src/adlist.h"
 
+// 函数声明
+void adlist_demo(void);
+
 // 字符串匹配函数
 int stringMatch(void *ptr, void *key) {
     return strcmp((char*)ptr, (char*)key) == 0;
@@ -18,14 +21,14 @@ void stringFree(void *ptr) {
     free(ptr);
 }
 
-int main() {
+void adlist_demo() {
     printf("=== Redis 链表实现测试 ===\n\n");
     
     // 创建链表
     list *myList = listCreate();
     if (!myList) {
         printf("创建链表失败！\n");
-        return 1;
+        return;
     }
     
     // 设置自定义函数
@@ -151,5 +154,4 @@ int main() {
     printf("   链表已释放\n");
     
     printf("\n=== 测试完成 ===\n");
-    return 0;
 } 
