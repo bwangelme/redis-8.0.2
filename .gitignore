@@ -44,4 +44,4 @@ compile_commands.json
 redis.code-workspace
 
 # 测试生成的可执行文件
-**/exec_bin_*
+**/exec_*

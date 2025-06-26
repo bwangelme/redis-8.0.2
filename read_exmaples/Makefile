@@ -4,7 +4,7 @@ CFLAGS = -Wall -g
 LDFLAGS =
 
 # 定义目标文件和依赖项
-TARGET_MAIN = main
+TARGET_MAIN = exec_main
 SRCS_MAIN = ../src/adlist.c zmalloc.c adlist_demo.c main.c
 OBJS_MAIN = $(SRCS_MAIN:.c=.o)
 
