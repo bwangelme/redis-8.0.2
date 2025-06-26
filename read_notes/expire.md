@@ -6,7 +6,8 @@ Redis删除过期key主要通过两种方式：**惰性删除（Lazy Expiration�
 
 **核心函数：`expireIfNeeded`** (在 `src/db.c` 中)
 
-```2271:2314:src/db.c
+- 2271:2314:src/db.c
+```c
 static inline keyStatus expireIfNeededWithSlot(redisDb *db, robj *key, int flags, const int keySlot) {
     if ((server.allow_access_expired) ||
         (flags & EXPIRE_ALLOW_ACCESS_EXPIRED) ||
@@ -61,7 +62,9 @@ static inline keyStatus expireIfNeededWithSlot(redisDb *db, robj *key, int flags
 
 **核心函数：`activeExpireCycle`** (在 `src/expire.c` 中)
 
-```37:55:src/expire.c
+- 37:55:src/expire.c
+
+```c
 int activeExpireCycleTryExpire(redisDb *db, dictEntry *de, long long now) {
     long long t = dictGetSignedIntegerVal(de);
     if (now < t)
@@ -101,7 +104,9 @@ void deleteExpiredKeyAndPropagate(redisDb *db, robj *keyobj) {
 
 **具体删除实现：`dbGenericDelete`**
 
-```471:510:src/db.c
+- 471:510:src/db.c
+
+```c
 int dbGenericDelete(redisDb *db, robj *key, int async, int flags) {
     dictEntry **plink;
     int table;
@@ -171,7 +176,9 @@ int dbGenericDelete(redisDb *db, robj *key, int async, int flags) {
 
 ### 2. 关键参数和配置
 
-```187:200:src/expire.c
+- 187:200:src/expire.c
+
+```c
 void activeExpireCycle(int type) {
     /* Adjust the running parameters according to the configured expire
      * effort. The default effort is 1, and the maximum configurable effort
@@ -198,7 +205,9 @@ void activeExpireCycle(int type) {
 
 #### 3.1 单个key的过期检查
 
-```38:52:src/expire.c
+- 38:52:src/expire.c
+
+```c
 int activeExpireCycleTryExpire(redisDb *db, dictEntry *de, long long now) {
     long long t = dictGetSignedIntegerVal(de);
     if (now < t)
