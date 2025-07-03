@@ -95,7 +95,7 @@ typedef struct list {
 
 ### 5. 使用示例
 
-详见 ./adlist_demo
+详见 ./read_examples/adlist_demo.c
 
 
 ### 6. 性能特点
