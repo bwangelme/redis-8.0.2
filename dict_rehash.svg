@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" style="background-color: white;">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#333">Redis Hash Table Progressive Rehashing</text>
+  
+  <!-- Main Process Flow -->
+  <rect x="50" y="60" width="160" height="50" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+  <text x="130" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Initial State</text>
+  <text x="130" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">ht_table[0] size=4</text>
+  
+  <rect x="250" y="60" width="160" height="50" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+  <text x="330" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Trigger Rehash</text>
+  <text x="330" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Load Factor >= 1.0</text>
+  
+  <rect x="450" y="60" width="160" height="50" fill="#e8f5e8" stroke="#4caf50" stroke-width="2"/>
+  <text x="530" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Create New Table</text>
+  <text x="530" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">ht_table[1] size=8</text>
+  
+  <rect x="650" y="60" width="160" height="50" fill="#f3e5f5" stroke="#9c27b0" stroke-width="2"/>
+  <text x="730" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Set rehashidx = 0</text>
+  <text x="730" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Start Progressive</text>
+  
+  <rect x="850" y="60" width="160" height="50" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
+  <text x="930" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Complete Rehash</text>
+  <text x="930" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">rehashidx = -1</text>
+  
+  <!-- Arrows -->
+  <line x1="210" y1="85" x2="250" y2="85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="410" y1="85" x2="450" y2="85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="610" y1="85" x2="650" y2="85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="810" y1="85" x2="850" y2="85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Before Rehash -->
+  <rect x="50" y="150" width="300" height="140" fill="#f5f5f5" stroke="#666" stroke-width="1"/>
+  <text x="200" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Before Rehash</text>
+  <text x="200" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">ht_table[0] (size=4)</text>
+  
+  <rect x="70" y="210" width="120" height="20" fill="#ffcdd2" stroke="#d32f2f" stroke-width="1"/>
+  <text x="130" y="223" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">[0] Entry A</text>
+  
+  <rect x="70" y="240" width="120" height="20" fill="#ffcdd2" stroke="#d32f2f" stroke-width="1"/>
+  <text x="130" y="253" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">[1] Entry B,C</text>
+  
+  <rect x="200" y="210" width="120" height="20" fill="#ffcdd2" stroke="#d32f2f" stroke-width="1"/>
+  <text x="260" y="223" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">[2] Entry D</text>
+  
+  <rect x="200" y="240" width="120" height="20" fill="#ffcdd2" stroke="#d32f2f" stroke-width="1"/>
+  <text x="260" y="253" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">[3] Entry E,F</text>
+  
+  <!-- During Rehash -->
+  <rect x="400" y="150" width="350" height="140" fill="#f5f5f5" stroke="#666" stroke-width="1"/>
+  <text x="575" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">During Rehash</text>
+  <text x="575" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Both tables active</text>
+  
+  <rect x="420" y="210" width="140" height="40" fill="#fff3e0" stroke="#f57c00" stroke-width="1"/>
+  <text x="490" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">ht_table[0]</text>
+  <text x="490" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">(partial empty)</text>
+  
+  <rect x="580" y="210" width="140" height="40" fill="#e8f5e8" stroke="#4caf50" stroke-width="1"/>
+  <text x="650" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">ht_table[1]</text>
+  <text x="650" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">(growing)</text>
+  
+  <line x1="560" y1="230" x2="580" y2="230" stroke="#d32f2f" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- After Rehash -->
+  <rect x="800" y="150" width="350" height="140" fill="#f5f5f5" stroke="#666" stroke-width="1"/>
+  <text x="975" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">After Rehash</text>
+  <text x="975" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">ht_table[0] (size=8)</text>
+  
+  <rect x="820" y="210" width="70" height="15" fill="#c8e6c9" stroke="#4caf50" stroke-width="1"/>
+  <text x="855" y="221" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">[0] A</text>
+  
+  <rect x="900" y="210" width="70" height="15" fill="#c8e6c9" stroke="#4caf50" stroke-width="1"/>
+  <text x="935" y="221" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">[1] B</text>
+  
+  <rect x="980" y="210" width="70" height="15" fill="#c8e6c9" stroke="#4caf50" stroke-width="1"/>
+  <text x="1015" y="221" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">[2] C</text>
+  
+  <rect x="1060" y="210" width="70" height="15" fill="#c8e6c9" stroke="#4caf50" stroke-width="1"/>
+  <text x="1095" y="221" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">[3] D</text>
+  
+  <rect x="820" y="235" width="70" height="15" fill="#c8e6c9" stroke="#4caf50" stroke-width="1"/>
+  <text x="855" y="246" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">[4] E</text>
+  
+  <rect x="900" y="235" width="70" height="15" fill="#c8e6c9" stroke="#4caf50" stroke-width="1"/>
+  <text x="935" y="246" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">[5] F</text>
+  
+  <rect x="980" y="235" width="70" height="15" fill="#e0e0e0" stroke="#757575" stroke-width="1"/>
+  <text x="1015" y="246" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">[6] -</text>
+  
+  <rect x="1060" y="235" width="70" height="15" fill="#e0e0e0" stroke="#757575" stroke-width="1"/>
+  <text x="1095" y="246" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">[7] -</text>
+  
+  <!-- Progressive Steps -->
+  <rect x="50" y="320" width="1100" height="180" fill="#f9f9f9" stroke="#ccc" stroke-width="1"/>
+  <text x="600" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">Progressive Rehashing Steps</text>
+  
+  <rect x="80" y="360" width="180" height="30" fill="#e3f2fd" stroke="#1976d2" stroke-width="1"/>
+  <text x="170" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">rehashidx=0: Move bucket 0</text>
+  
+  <rect x="280" y="360" width="180" height="30" fill="#e3f2fd" stroke="#1976d2" stroke-width="1"/>
+  <text x="370" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">rehashidx=1: Move bucket 1</text>
+  
+  <rect x="480" y="360" width="180" height="30" fill="#e3f2fd" stroke="#1976d2" stroke-width="1"/>
+  <text x="570" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">rehashidx=2: Move bucket 2</text>
+  
+  <rect x="680" y="360" width="180" height="30" fill="#e3f2fd" stroke="#1976d2" stroke-width="1"/>
+  <text x="770" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">rehashidx=3: Move bucket 3</text>
+  
+  <rect x="880" y="360" width="180" height="30" fill="#ffebee" stroke="#f44336" stroke-width="1"/>
+  <text x="970" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">Rehash Complete!</text>
+  
+  <line x1="260" y1="375" x2="280" y2="375" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="460" y1="375" x2="480" y2="375" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="660" y1="375" x2="680" y2="375" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="860" y1="375" x2="880" y2="375" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Key Points -->
+  <text x="170" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">One bucket at a time</text>
+  <text x="370" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">Avoid long blocking</text>
+  <text x="570" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">Distributed across ops</text>
+  <text x="770" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">Maintain availability</text>
+  <text x="970" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">Free old table</text>
+  
+  <!-- Benefits -->
+  <rect x="50" y="520" width="1100" height="60" fill="#e8f5e8" stroke="#4caf50" stroke-width="2"/>
+  <text x="600" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Benefits of Progressive Rehashing</text>
+  
+  <text x="200" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">Avoid blocking operations</text>
+  <text x="450" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">Maintain service availability</text>
+  <text x="700" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">Smooth capacity expansion</text>
+  <text x="950" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">Better performance</text>
+</svg> 
