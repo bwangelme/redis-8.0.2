@@ -1,0 +1,142 @@
+digraph RedisRehash {
+    rankdir=TB;
+    compound=true;
+    node [fontname="Arial", fontsize=10];
+    edge [fontname="Arial", fontsize=8];
+    
+    // 图表标题
+    label="Redis Hash Table Progressive Rehashing";
+    labelloc=t;
+    labeljust=c;
+    fontname="Arial";
+    fontsize=16;
+    fontcolor="#333333";
+    
+    // 主要流程
+    subgraph cluster_main_flow {
+        label="Main Process Flow";
+        style=filled;
+        color="#e8f4f8";
+        fontname="Arial";
+        fontsize=12;
+        fontcolor="#1976d2";
+        
+        initial [label="Initial State\nht_table[0] size=4", shape=box, style=filled, fillcolor="#e3f2fd", color="#1976d2"];
+        trigger [label="Trigger Rehash\nLoad Factor >= 1.0", shape=box, style=filled, fillcolor="#fff3e0", color="#f57c00"];
+        create [label="Create New Table\nht_table[1] size=8", shape=box, style=filled, fillcolor="#e8f5e8", color="#4caf50"];
+        set_idx [label="Set rehashidx = 0\nStart Progressive", shape=box, style=filled, fillcolor="#f3e5f5", color="#9c27b0"];
+        complete [label="Complete Rehash\nrehashidx = -1", shape=box, style=filled, fillcolor="#ffebee", color="#f44336"];
+        
+        initial -> trigger -> create -> set_idx -> complete;
+    }
+    
+    // 三个状态的展示
+    subgraph cluster_states {
+        label="Hash Table States";
+        style=filled;
+        color="#f9f9f9";
+        fontname="Arial";
+        fontsize=12;
+        fontcolor="#333333";
+        
+        // Before Rehash
+        subgraph cluster_before {
+            label="Before Rehash - ht_table[0] (size=4)";
+            style=filled;
+            color="#fff8f0";
+            fontname="Arial";
+            fontsize=10;
+            fontcolor="#d32f2f";
+            
+            before_0 [label="[0] Entry A", shape=box, style=filled, fillcolor="#ffcdd2", color="#d32f2f"];
+            before_1 [label="[1] Entry B,C", shape=box, style=filled, fillcolor="#ffcdd2", color="#d32f2f"];
+            before_2 [label="[2] Entry D", shape=box, style=filled, fillcolor="#ffcdd2", color="#d32f2f"];
+            before_3 [label="[3] Entry E,F", shape=box, style=filled, fillcolor="#ffcdd2", color="#d32f2f"];
+            
+            before_0 -> before_1 -> before_2 -> before_3 [style=invis];
+        }
+        
+        // During Rehash
+        subgraph cluster_during {
+            label="During Rehash - Both Tables Active";
+            style=filled;
+            color="#fff8f0";
+            fontname="Arial";
+            fontsize=10;
+            fontcolor="#f57c00";
+            
+            during_old [label="ht_table[0]\n(partially empty)", shape=box, style=filled, fillcolor="#fff3e0", color="#f57c00"];
+            during_new [label="ht_table[1]\n(growing)", shape=box, style=filled, fillcolor="#e8f5e8", color="#4caf50"];
+            
+            during_old -> during_new [label="moving entries", color="#d32f2f", style=bold];
+        }
+        
+        // After Rehash
+        subgraph cluster_after {
+            label="After Rehash - ht_table[0] (size=8)";
+            style=filled;
+            color="#f0f8f0";
+            fontname="Arial";
+            fontsize=10;
+            fontcolor="#4caf50";
+            
+            after_0 [label="[0] A", shape=box, style=filled, fillcolor="#c8e6c9", color="#4caf50"];
+            after_1 [label="[1] B", shape=box, style=filled, fillcolor="#c8e6c9", color="#4caf50"];
+            after_2 [label="[2] C", shape=box, style=filled, fillcolor="#c8e6c9", color="#4caf50"];
+            after_3 [label="[3] D", shape=box, style=filled, fillcolor="#c8e6c9", color="#4caf50"];
+            after_4 [label="[4] E", shape=box, style=filled, fillcolor="#c8e6c9", color="#4caf50"];
+            after_5 [label="[5] F", shape=box, style=filled, fillcolor="#c8e6c9", color="#4caf50"];
+            after_6 [label="[6] -", shape=box, style=filled, fillcolor="#e0e0e0", color="#757575"];
+            after_7 [label="[7] -", shape=box, style=filled, fillcolor="#e0e0e0", color="#757575"];
+            
+            {rank=same; after_0; after_1; after_2; after_3;}
+            {rank=same; after_4; after_5; after_6; after_7;}
+        }
+    }
+    
+    // 渐进式步骤
+    subgraph cluster_steps {
+        label="Progressive Rehashing Steps";
+        style=filled;
+        color="#f0f8ff";
+        fontname="Arial";
+        fontsize=12;
+        fontcolor="#1976d2";
+        
+        step1 [label="rehashidx=0\nMove bucket 0\n(One bucket at a time)", shape=box, style=filled, fillcolor="#e3f2fd", color="#1976d2"];
+        step2 [label="rehashidx=1\nMove bucket 1\n(Avoid long blocking)", shape=box, style=filled, fillcolor="#e3f2fd", color="#1976d2"];
+        step3 [label="rehashidx=2\nMove bucket 2\n(Distributed across ops)", shape=box, style=filled, fillcolor="#e3f2fd", color="#1976d2"];
+        step4 [label="rehashidx=3\nMove bucket 3\n(Maintain availability)", shape=box, style=filled, fillcolor="#e3f2fd", color="#1976d2"];
+        step5 [label="Rehash Complete!\nFree old table", shape=box, style=filled, fillcolor="#ffebee", color="#f44336"];
+        
+        step1 -> step2 -> step3 -> step4 -> step5;
+    }
+    
+    // 好处说明
+    subgraph cluster_benefits {
+        label="Benefits of Progressive Rehashing";
+        style=filled;
+        color="#f0f8f0";
+        fontname="Arial";
+        fontsize=12;
+        fontcolor="#4caf50";
+        
+        benefit1 [label="Avoid blocking\noperations", shape=ellipse, style=filled, fillcolor="#e8f5e8", color="#4caf50"];
+        benefit2 [label="Maintain service\navailability", shape=ellipse, style=filled, fillcolor="#e8f5e8", color="#4caf50"];
+        benefit3 [label="Smooth capacity\nexpansion", shape=ellipse, style=filled, fillcolor="#e8f5e8", color="#4caf50"];
+        benefit4 [label="Better\nperformance", shape=ellipse, style=filled, fillcolor="#e8f5e8", color="#4caf50"];
+        
+        {rank=same; benefit1; benefit2; benefit3; benefit4;}
+    }
+    
+    // 连接主要流程与状态
+    trigger -> before_0 [lhead=cluster_before, style=dotted, color="#666666"];
+    create -> during_old [lhead=cluster_during, style=dotted, color="#666666"];
+    complete -> after_0 [lhead=cluster_after, style=dotted, color="#666666"];
+    
+    // 连接到步骤
+    set_idx -> step1 [style=dotted, color="#666666"];
+    
+    // 连接到好处
+    complete -> benefit2 [style=dotted, color="#666666"];
+} 
